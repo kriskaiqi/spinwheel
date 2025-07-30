@@ -25,5 +25,7 @@ dist-ssr
 
 # other
 prompt_plan.md
-spec.todo.md
+spec.md
 todo.md
+.env
+.env.local
