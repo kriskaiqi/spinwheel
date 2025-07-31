@@ -15,6 +15,8 @@ const WheelCanvas: React.FC<WheelCanvasProps> = ({
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const wheelRef = useRef<SVGGElement>(null);
+  const spinAudioRef = useRef<HTMLAudioElement>(null);
+  const winAudioRef = useRef<HTMLAudioElement>(null);
 
   const segmentAngle = 360 / entries.length;
   const radius = size / 2;
@@ -52,6 +54,12 @@ const WheelCanvas: React.FC<WheelCanvasProps> = ({
     if (isSpinning) return;
 
     setIsSpinning(true);
+
+    // Play spin sound
+    if (spinAudioRef.current) {
+      spinAudioRef.current.currentTime = 0;
+      spinAudioRef.current.play();
+    }
     
     // Generate random rotation (multiple full turns + random final position)
     const minSpins = 5;
@@ -67,6 +75,12 @@ const WheelCanvas: React.FC<WheelCanvasProps> = ({
       const normalizedAngle = (360 - (finalAngle % 360)) % 360;
       const winnerIndex = Math.floor(normalizedAngle / segmentAngle) % entries.length;
       const winner = entries[winnerIndex];
+
+      // Play win sound
+      if (winAudioRef.current) {
+        winAudioRef.current.currentTime = 0;
+        winAudioRef.current.play();
+      }
       
       setIsSpinning(false);
       onSpinComplete(winner);
@@ -75,6 +89,8 @@ const WheelCanvas: React.FC<WheelCanvasProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <audio ref={spinAudioRef} src="/sounds/spin.mp3" preload="auto" />
+      <audio ref={winAudioRef} src="/sounds/win.mp3" preload="auto" />
       <div className="relative">
         <svg width={size} height={size} className="drop-shadow-lg">
           <g

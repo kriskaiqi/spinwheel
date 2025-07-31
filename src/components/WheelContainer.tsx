@@ -4,6 +4,7 @@ import ChatInput from './ChatInput';
 import { useAiWheel } from '../hooks/useAiWheel';
 import { useAuth } from './AuthProvider';
 import { saveWheel } from '../api/firestore';
+import toast from 'react-hot-toast';
 
 export default function WheelContainer({ entries: initialEntries = [
   'Pizza', 'Burger', 'Sushi', 'Tacos', 'Pasta', 
@@ -46,9 +47,10 @@ export default function WheelContainer({ entries: initialEntries = [
     try {
       // Replace false with actual premium status if available
       await saveWheel(currentUser.uid, entries, false);
-      alert('Wheel saved!');
+      toast.success('Wheel saved!');
     } catch (err: any) {
       setSaveError(err.message);
+      toast.error(err.message);
     } finally {
       setSaving(false);
     }

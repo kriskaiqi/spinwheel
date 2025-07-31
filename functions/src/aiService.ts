@@ -30,7 +30,7 @@ export async function generateEntries(theme: string, count: number): Promise<str
     let entries: string[];
     try {
       entries = JSON.parse(text);
-    } catch (parseError) {
+    } catch {
       // If direct parsing fails, try to extract JSON from the response
       const jsonMatch = text.match(/\[.*\]/s);
       if (jsonMatch) {
