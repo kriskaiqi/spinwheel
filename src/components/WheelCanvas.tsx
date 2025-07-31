@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { WHEEL_COLORS } from '../constants/palette';
 
 interface WheelCanvasProps {
   entries: string[];
@@ -20,17 +21,8 @@ const WheelCanvas: React.FC<WheelCanvasProps> = ({
   const centerX = radius;
   const centerY = radius;
 
-  // Generate colors for segments
-  const generateColors = (count: number) => {
-    const colors = [];
-    for (let i = 0; i < count; i++) {
-      const hue = (i * 360) / count;
-      colors.push(`hsl(${hue}, 70%, 60%)`);
-    }
-    return colors;
-  };
-
-  const colors = generateColors(entries.length);
+  // Use predefined palette with cycling for segments
+  const colors = entries.map((_, index) => WHEEL_COLORS[index % WHEEL_COLORS.length]);
 
   // Create SVG path for each segment
   const createSegmentPath = (index: number) => {
